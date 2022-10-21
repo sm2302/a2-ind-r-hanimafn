@@ -10,7 +10,7 @@ library(tidyverse)
 ## This function returns the value of pdf of f
 
 pareto_pdf <- function(x, alpha, beta) {
-  if (alpha <= 0 || beta <= 0){
+  if (alpha <= 0 | beta <= 0){
     stop("'alpha' or/and 'beta' is 'less than or equal to 0'")
   }
   if (x >= beta){
@@ -43,8 +43,8 @@ pareto_dev <- function(alpha, beta, x){
 # 'alpha_hat', which is the 'argmin of the deviance function' 
 # 'beta_hat', which is the 'min of sample X'
 
-X <- read.table("19b2052.txt") 
-n <- count(X)$n # The length of X 
+X <- scan("19b2052.txt") 
+n <- length(X) # The length of X 
 
 beta_hat <- min(X)
 alpha_hat <-n/( sum(log(X / beta_hat)) )
@@ -68,11 +68,9 @@ B <- sample(5:n, 1) # generate a random number for length B
 B                   # display the value of B  
  
 # x is sampled randomly from X with length B
-x_vals <- X %>%          
-  unlist %>%             
+x_vals <- X %>%           
   sample(size = B) %>%  
-  sort %>%               
-  as.vector              
+  sort             
 
 cdf_vals <- pareto_cdf(x_vals, alpha_hat, beta_hat)
 
